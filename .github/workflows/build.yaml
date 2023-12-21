@@ -24,6 +24,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: jmgrimes/hello-go/hello-go
+          repository: jmgrimes/bookings-backend-users-subgraph/bookings-backend-users-subgraph
           tag_with_ref: true
           push: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/tags/') }}
