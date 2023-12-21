@@ -1,0 +1,29 @@
+name: Build Workflow
+on:
+  push:
+    branches:
+      - develop   # build pushes to develop branch
+      - main      # build pushes to main branch
+      - feature/* # build pushes to feature branches
+      - hotfix/*  # build pushes to hotfix branches
+      - release/* # build pushes to release branches
+      - support/* # build pushes to support branches
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+      - name: Build Docker Image and Publish
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: jmgrimes/hello-go/hello-go
+          tag_with_ref: true
+          push: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/tags/') }}

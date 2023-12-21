@@ -1,0 +1,65 @@
+"Representation of a User of the Reservation System."
+type User @key(fields: "id") {
+    """
+    The ID value for the User.
+    Formatted as a 24 character hexadecimal ObjectId value.
+    """
+    id: ID!
+
+    "The first name of the User."
+    firstName: String!
+
+    "The last name of the User."
+    lastName: String!
+
+    "The email address of the User."
+    emailAddress: String!
+
+    "The title of the User."
+    title: String!
+
+    "The image of the User."
+    image: String
+
+    "The notes for the User."
+    notes: String
+}
+
+input UserInput {
+    "The first name of the User."
+    firstName: String!
+
+    "The last name of the User."
+    lastName: String!
+
+    "The email address of the User."
+    emailAddress: String!
+
+    "The title of the User."
+    title: String!
+
+    "The image of the User."
+    image: String
+
+    "The notes for the User."
+    notes: String
+}
+
+extend type Query {
+    "Retrieve a User by the user's ID value."
+    user(id: ID!): User
+
+    "Retrieve all users."
+    users(ids: [ID]): [User!]!
+}
+
+extend type Mutation {
+    "Create a new user represented by the input fields."
+    createUser(user: UserInput!): User!
+
+    "Update an existing user by the user's ID value with the input fields."
+    updateUser(id: ID!, user: UserInput!): User
+
+    "Delete an existing user by the user's ID value."
+    deleteUser(id: ID!): User
+}
