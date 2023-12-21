@@ -40,9 +40,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - id: docker-metadata
         name: Extract Metadata for Docker
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       - id: docker-build-push
         name: Build Docker Image and Push
         uses: docker/build-push-action@v5
