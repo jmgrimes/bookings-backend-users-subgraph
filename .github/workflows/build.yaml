@@ -32,5 +32,5 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          tag: docker.pkg.github.com/jmgrimes/bookings-backend-users-subgraph/bookings-backend-users-subgraph:${{ github.ref_name }}
+          tags: docker.pkg.github.com/jmgrimes/bookings-backend-users-subgraph/bookings-backend-users-subgraph:${{ github.ref_name }}
           push: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/tags/') }}
