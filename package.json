@@ -1,7 +1,7 @@
 {
   "name": "bookings-backend-users-subgraph",
   "version": "1.0.0",
-  "description": "Backend application supporting Users for the booking application.",
+  "description": "Backend application supporting the Users subgraph for the booking application.",
   "author": "Jonah Grimes",
   "private": true,
   "license": "CC0-1.0",
