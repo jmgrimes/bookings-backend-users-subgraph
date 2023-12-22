@@ -1,21 +1,21 @@
-import { Inject } from "@nestjs/common";
-import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { Inject } from "@nestjs/common"
+import { Args, Mutation, Query, Resolver } from "@nestjs/graphql"
 
 import {
   IUser,
   IUserModel,
   IUsersService,
   USERS_SERVICE,
-} from "./users.service";
-import { IsEmail, IsUrl } from "class-validator";
+} from "./users.service"
+import { IsEmail, IsUrl } from "class-validator"
 
 export class UserInput implements IUserModel {
-  firstName: string;
-  lastName: string;
-  @IsEmail() emailAddress: string;
-  title: string;
-  @IsUrl() image?: string;
-  notes?: string;
+  firstName: string
+  lastName: string
+  @IsEmail() emailAddress: string
+  title: string
+  @IsUrl() image?: string
+  notes?: string
 }
 
 @Resolver("User")
@@ -24,17 +24,17 @@ export class UsersResolver {
 
   @Query()
   async user(@Args("id") id: string): Promise<IUser | undefined> {
-    return this.usersService.findById(id);
+    return this.usersService.findById(id)
   }
 
   @Query()
   async users(@Args("ids") ids: string[]): Promise<IUser[]> {
-    return this.usersService.findAll(ids);
+    return this.usersService.findAll(ids)
   }
 
   @Mutation()
   async createUser(@Args("user") userInput: UserInput): Promise<IUser> {
-    return this.usersService.create(userInput);
+    return this.usersService.create(userInput)
   }
 
   @Mutation()
@@ -42,11 +42,11 @@ export class UsersResolver {
     @Args("id") id: string,
     @Args("user") userInput: UserInput,
   ): Promise<IUser | undefined> {
-    return this.usersService.updateById(id, userInput);
+    return this.usersService.updateById(id, userInput)
   }
 
   @Mutation()
   async deleteUser(@Args("id") id: string): Promise<IUser | undefined> {
-    return this.usersService.deleteById(id);
+    return this.usersService.deleteById(id)
   }
 }

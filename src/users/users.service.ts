@@ -1,80 +1,83 @@
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { MongoDataSource } from "apollo-datasource-mongodb";
-import { Model, Types } from "mongoose";
+import { Injectable } from "@nestjs/common"
+import { InjectModel } from "@nestjs/mongoose"
+import { MongoDataSource } from "apollo-datasource-mongodb"
+import { Model, Types } from "mongoose"
 
-import { User, UserDocument } from "./users.schema";
+import { User, UserDocument } from "./users.schema"
 
-export const USERS_SERVICE = "USERS_SERVICE";
+export const USERS_SERVICE = "USERS_SERVICE"
 
 export interface IUserModel {
-  firstName: string;
-  lastName: string;
-  emailAddress: string;
-  title: string;
-  image?: string;
-  notes?: string;
+  firstName: string
+  lastName: string
+  emailAddress: string
+  title: string
+  image?: string
+  notes?: string
 }
 
 export interface IUser extends IUserModel {
-  id: string;
+  id: string
 }
 
 export interface IUsersService {
-  findById(id: string): Promise<IUser | undefined>;
-  findAll(ids?: string[]): Promise<IUser[]>;
-  create(userModel: IUserModel): Promise<IUser>;
-  updateById(id: string, userModel: IUserModel): Promise<IUser>;
-  deleteById(id: string): Promise<IUser>;
+  findById(id: string): Promise<IUser | undefined>
+  findAll(ids?: string[]): Promise<IUser[]>
+  create(userModel: IUserModel): Promise<IUser>
+  updateById(id: string, userModel: IUserModel): Promise<IUser>
+  deleteById(id: string): Promise<IUser>
 }
 
 @Injectable()
-export class UsersService extends MongoDataSource<UserDocument> implements IUsersService{
+export class UsersService
+  extends MongoDataSource<UserDocument>
+  implements IUsersService
+{
   constructor(@InjectModel(User.name) userModel: Model<UserDocument>) {
     super({
       modelOrCollection: userModel,
-    });
+    })
   }
 
   async findById(id: string): Promise<IUser | undefined> {
-    return this.findOneById(new Types.ObjectId(id)).then(this.toUser);
+    return this.findOneById(new Types.ObjectId(id)).then(this.toUser)
   }
 
   async findAll(ids?: string[]): Promise<IUser[]> {
     const userDocuments = await this.findManyByIds(
       ids ? ids.map((id) => new Types.ObjectId(id)) : await this.findAllIds(),
-    );
-    return userDocuments.map(this.toUser);
+    )
+    return userDocuments.map(this.toUser)
   }
 
   async create(userModel: IUserModel): Promise<IUser> {
-    return this.model.create(userModel).then(this.toUser);
+    return this.model.create(userModel).then(this.toUser)
   }
 
   async updateById(
     id: string,
     userModel: IUserModel,
   ): Promise<IUser | undefined> {
-    const objectId = new Types.ObjectId(id);
-    await this.deleteFromCacheById(objectId);
-    await this.model.findByIdAndUpdate(objectId, userModel).exec();
-    return this.findOneById(objectId).then(this.toUser);
+    const objectId = new Types.ObjectId(id)
+    await this.deleteFromCacheById(objectId)
+    await this.model.findByIdAndUpdate(objectId, userModel).exec()
+    return this.findOneById(objectId).then(this.toUser)
   }
 
   async deleteById(id: string): Promise<IUser | undefined> {
-    const objectId = new Types.ObjectId(id);
-    await this.deleteFromCacheById(objectId);
+    const objectId = new Types.ObjectId(id)
+    await this.deleteFromCacheById(objectId)
     return this.model
       .findByIdAndDelete(objectId)
       .exec()
       .then((result) => {
-        return this.toUser(result.value);
-      });
+        return this.toUser(result.value)
+      })
   }
 
   private async findAllIds(): Promise<Types.ObjectId[]> {
-    const users = await this.model.find({}, ["_id"]).exec();
-    return users.map((user) => user._id);
+    const users = await this.model.find({}, ["_id"]).exec()
+    return users.map((user) => user._id)
   }
 
   private toUser(userDocument: UserDocument): IUser {
@@ -86,6 +89,6 @@ export class UsersService extends MongoDataSource<UserDocument> implements IUser
       title: userDocument.title,
       image: userDocument.image,
       notes: userDocument.notes,
-    };
+    }
   }
 }

@@ -43,6 +43,9 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          labels:
+            org.opencontainers.image.title=Bookings Backend Users Subgraph
+            org.opencontainers.image.description=Backend application supporting the Users subgraph for the booking application.
       - id: docker-build-push
         name: Build Docker Image and Push
         uses: docker/build-push-action@v5

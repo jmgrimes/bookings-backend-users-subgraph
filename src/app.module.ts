@@ -1,12 +1,12 @@
-import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
-import { ApolloServerPluginInlineTraceDisabled } from "@apollo/server/plugin/disabled";
-import { ApolloDriverConfig, ApolloFederationDriver } from "@nestjs/apollo";
-import { Module } from "@nestjs/common";
-import { GraphQLModule } from "@nestjs/graphql";
-import { MongooseModule } from "@nestjs/mongoose";
+import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default"
+import { ApolloServerPluginInlineTraceDisabled } from "@apollo/server/plugin/disabled"
+import { ApolloDriverConfig, ApolloFederationDriver } from "@nestjs/apollo"
+import { Module } from "@nestjs/common"
+import { ConfigModule, ConfigService } from "@nestjs/config"
+import { GraphQLModule } from "@nestjs/graphql"
+import { MongooseModule } from "@nestjs/mongoose"
 
-import { UsersModule } from "./users/users.module";
-import { ConfigModule, ConfigService } from "@nestjs/config";
+import { UsersModule } from "./users/users.module"
 
 @Module({
   imports: [
