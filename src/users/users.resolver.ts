@@ -1,13 +1,9 @@
 import { Inject } from "@nestjs/common"
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql"
-
-import {
-  IUser,
-  IUserModel,
-  IUsersService,
-  USERS_SERVICE,
-} from "./users.service"
 import { IsEmail, IsUrl } from "class-validator"
+
+import { IUser, IUserModel } from "./users.model"
+import { IUsersService, USERS_SERVICE } from "./users.service"
 
 export class UserInput implements IUserModel {
   firstName: string
@@ -28,7 +24,7 @@ export class UsersResolver {
   }
 
   @Query()
-  async users(@Args("ids") ids: string[]): Promise<IUser[]> {
+  async users(@Args("ids") ids?: string[]): Promise<IUser[]> {
     return this.usersService.findAll(ids)
   }
 

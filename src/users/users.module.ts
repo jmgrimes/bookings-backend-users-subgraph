@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common"
+import { Module, Scope } from "@nestjs/common"
 import { MongooseModule } from "@nestjs/mongoose"
 
 import { UsersResolver } from "./users.resolver"
@@ -9,11 +9,19 @@ import { USERS_SERVICE, UsersService } from "./users.service"
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
+  exports: [
+    {
+      provide: USERS_SERVICE,
+      useClass: UsersService,
+      scope: Scope.DEFAULT,
+    },
+  ],
   providers: [
     UsersResolver,
     {
       provide: USERS_SERVICE,
       useClass: UsersService,
+      scope: Scope.DEFAULT,
     },
   ],
 })

@@ -45,7 +45,7 @@ input UserInput {
     notes: String
 }
 
-extend type Query {
+type Query {
     "Retrieve a User by the user's ID value."
     user(id: ID!): User
 
@@ -53,7 +53,7 @@ extend type Query {
     users(ids: [ID]): [User!]!
 }
 
-extend type Mutation {
+type Mutation {
     "Create a new user represented by the input fields."
     createUser(user: UserInput!): User!
 

@@ -3,22 +3,10 @@ import { InjectModel } from "@nestjs/mongoose"
 import { MongoDataSource } from "apollo-datasource-mongodb"
 import { Model, Types } from "mongoose"
 
+import { IUser, IUserModel } from "./users.model"
 import { User, UserDocument } from "./users.schema"
 
 export const USERS_SERVICE = "USERS_SERVICE"
-
-export interface IUserModel {
-  firstName: string
-  lastName: string
-  emailAddress: string
-  title: string
-  image?: string
-  notes?: string
-}
-
-export interface IUser extends IUserModel {
-  id: string
-}
 
 export interface IUsersService {
   findById(id: string): Promise<IUser | undefined>
