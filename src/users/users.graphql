@@ -63,3 +63,8 @@ type Mutation {
     "Delete an existing user by the user's ID value."
     deleteUser(id: ID!): User
 }
+
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.3", import: ["@key", "@shareable"]) {
+    query: Query
+    mutation: Mutation
+}
