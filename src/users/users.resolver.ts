@@ -2,7 +2,7 @@ import { Inject } from "@nestjs/common"
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql"
 import { IsEmail, IsUrl } from "class-validator"
 
-import { IUser, IUserModel } from "./users.model"
+import { IUser, IUserModel, IUserPayload } from "./users.model"
 import { IUsersService, USERS_SERVICE } from "./users.service"
 
 export class UserInput implements IUserModel {
@@ -29,20 +29,41 @@ export class UsersResolver {
   }
 
   @Mutation()
-  async createUser(@Args("user") userInput: UserInput): Promise<IUser> {
-    return this.usersService.create(userInput)
+  async userCreate(@Args("user") userInput: UserInput): Promise<IUserPayload> {
+    return this.usersService
+      .create(userInput)
+      .then((user) => ({
+        user,
+      }))
+      .catch((error) => ({
+        errors: [{ message: error }],
+      }))
   }
 
   @Mutation()
-  async updateUser(
+  async userUpdate(
     @Args("id") id: string,
     @Args("user") userInput: UserInput,
-  ): Promise<IUser | undefined> {
-    return this.usersService.updateById(id, userInput)
+  ): Promise<IUserPayload> {
+    return this.usersService
+      .updateById(id, userInput)
+      .then((user) => ({
+        user,
+      }))
+      .catch((error) => ({
+        errors: [{ message: error }],
+      }))
   }
 
   @Mutation()
-  async deleteUser(@Args("id") id: string): Promise<IUser | undefined> {
-    return this.usersService.deleteById(id)
+  async userDelete(@Args("id") id: string): Promise<IUserPayload> {
+    return this.usersService
+      .deleteById(id)
+      .then((user) => ({
+        user,
+      }))
+      .catch((error) => ({
+        errors: [{ message: error }],
+      }))
   }
 }

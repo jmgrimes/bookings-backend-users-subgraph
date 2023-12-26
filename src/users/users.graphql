@@ -25,6 +25,7 @@ type User @key(fields: "id") {
     notes: String
 }
 
+"Input for the User part of User mutation operations."
 input UserInput {
     "The first name of the User."
     firstName: String!
@@ -45,7 +46,15 @@ input UserInput {
     notes: String
 }
 
-type Query {
+type UserPayload {
+    "Errors encountered during a user mutation operation."
+    errors: [UserError!]
+
+    "The User resulting from the user mutation operaiton."
+    user: User
+}
+
+extend type Query {
     "Retrieve a User by the user's ID value."
     user(id: ID!): User
 
@@ -53,18 +62,13 @@ type Query {
     users(ids: [ID]): [User!]!
 }
 
-type Mutation {
+extend type Mutation {
     "Create a new user represented by the input fields."
-    createUser(user: UserInput!): User!
+    userCreate(user: UserInput!): User!
 
     "Update an existing user by the user's ID value with the input fields."
-    updateUser(id: ID!, user: UserInput!): User
+    userUpdate(id: ID!, user: UserInput!): User
 
     "Delete an existing user by the user's ID value."
-    deleteUser(id: ID!): User
-}
-
-extend schema @link(url: "https://specs.apollo.dev/federation/v2.3", import: ["@key", "@shareable"]) {
-    query: Query
-    mutation: Mutation
+    userDelete(id: ID!): User
 }

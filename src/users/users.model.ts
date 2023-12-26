@@ -1,3 +1,5 @@
+import { IUserError } from "../commons"
+
 export interface IUserModel {
   firstName: string
   lastName: string
@@ -9,4 +11,9 @@ export interface IUserModel {
 
 export interface IUser extends IUserModel {
   id: string
+}
+
+export interface IUserPayload {
+  errors?: IUserError[]
+  user?: IUser
 }
