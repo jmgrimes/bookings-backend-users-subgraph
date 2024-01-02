@@ -6,20 +6,27 @@ import { ConfigModule, ConfigService } from "@nestjs/config"
 import { GraphQLModule } from "@nestjs/graphql"
 import { MongooseModule } from "@nestjs/mongoose"
 
-import UsersModule from "./users"
+import UsersModule, { IUsersService, USERS_SERVICE } from "./users"
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloFederationDriver,
-      path: "/api/graphql",
-      playground: false,
-      plugins: [
-        ApolloServerPluginInlineTraceDisabled(),
-        ApolloServerPluginLandingPageLocalDefault(),
-      ],
-      typePaths: ["./**/*.graphql"],
+      imports: [UsersModule],
+      inject: [USERS_SERVICE],
+      useFactory: async (usersService: IUsersService) => ({
+        context: () => ({
+          usersService,
+        }),
+        path: "/api/graphql",
+        playground: false,
+        plugins: [
+          ApolloServerPluginInlineTraceDisabled(),
+          ApolloServerPluginLandingPageLocalDefault(),
+        ],
+        typePaths: ["./**/*.graphql"],
+      }),
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
